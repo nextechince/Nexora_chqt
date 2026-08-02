@@ -29,6 +29,11 @@
         "android.permission.READ_MEDIA_AUDIO",
         "android.permission.POST_NOTIFICATIONS"
       ]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "your-project-id-here"
+      }
     }
   }
 }
