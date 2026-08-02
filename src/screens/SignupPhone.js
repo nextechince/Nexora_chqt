@@ -9,7 +9,8 @@ import {
   Platform,
   ScrollView,
   Modal,
-  FlatList
+  FlatList,
+  ActivityIndicator
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast from 'react-native-toast-message';
@@ -22,6 +23,7 @@ const SignupPhone = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [showCountryPicker, setShowCountryPicker] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleContinue = () => {
     if (!phoneNumber || phoneNumber.length < 5) {
@@ -38,20 +40,33 @@ const SignupPhone = ({ navigation }) => {
   const handleConfirm = async () => {
     const fullPhone = selectedCountry.code + phoneNumber;
     
-    // Check if user exists
-    const exists = await db.checkUserExists(fullPhone);
-    if (exists) {
+    setLoading(true);
+    try {
+      const exists = await db.checkUserExists(fullPhone);
+      if (exists) {
+        Toast.show({
+          type: 'error',
+          text1: 'Account Exists',
+          text2: 'This phone number is already registered'
+        });
+        setShowConfirm(false);
+        return;
+      }
+
+      // Send OTP
+      await db.generateOTP(null, fullPhone);
+      
+      setShowConfirm(false);
+      navigation.navigate('SignupEmail', { phone: fullPhone });
+    } catch (error) {
       Toast.show({
         type: 'error',
-        text1: 'Account Exists',
-        text2: 'This phone number is already registered'
+        text1: 'Error',
+        text2: 'Something went wrong'
       });
-      setShowConfirm(false);
-      return;
+    } finally {
+      setLoading(false);
     }
-
-    setShowConfirm(false);
-    navigation.navigate('SignupEmail', { phone: fullPhone });
   };
 
   const renderCountryItem = ({ item }) => (
@@ -105,16 +120,25 @@ const SignupPhone = ({ navigation }) => {
           />
         </View>
 
-        <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
-          <Text style={styles.continueButtonText}>Continue</Text>
-          <Icon name="arrow-right" size={20} color="#FFF" />
+        <TouchableOpacity
+          style={[styles.continueButton, loading && styles.buttonDisabled]}
+          onPress={handleContinue}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="#FFF" />
+          ) : (
+            <>
+              <Text style={styles.continueButtonText}>Continue</Text>
+              <Icon name="arrow-right" size={20} color="#FFF" />
+            </>
+          )}
         </TouchableOpacity>
 
         <Text style={styles.termsText}>
           By continuing, you agree to our Terms of Service and Privacy Policy
         </Text>
 
-        {/* Country Picker Modal */}
         <Modal
           visible={showCountryPicker}
           animationType="slide"
@@ -138,7 +162,6 @@ const SignupPhone = ({ navigation }) => {
           </View>
         </Modal>
 
-        {/* Confirm Modal */}
         <Modal
           visible={showConfirm}
           transparent={true}
@@ -247,6 +270,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginRight: 8
+  },
+  buttonDisabled: {
+    opacity: 0.7
   },
   termsText: {
     color: COLORS.textSecondary,
