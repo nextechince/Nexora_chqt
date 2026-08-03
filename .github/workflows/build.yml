@@ -16,7 +16,8 @@ jobs:
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24.x'   # Use Node 24 (not deprecated)
+          node-version: '20.x'
+          check-latest: true
       
       - name: 🟢 Verify Node version
         run: node --version
@@ -89,7 +90,6 @@ jobs:
       
       - name: 🏗️ Build APK
         run: |
-          npx expo export:embed --platform android
           npx eas-cli build --platform android --profile production --local --output ./nexora-chqt.apk
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
