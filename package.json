@@ -5,8 +5,7 @@
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
-    "build": "eas build -p android --profile production --local",
-    "build:apk": "npm run build"
+    "build": "eas build -p android --profile production --local"
   },
   "dependencies": {
     "expo": "~50.0.0",
