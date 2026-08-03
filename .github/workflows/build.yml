@@ -16,7 +16,7 @@ jobs:
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '20.x'   # ✅ Node 20+ is required
       
       - name: ☕ Setup Java
         uses: actions/setup-java@v4
@@ -35,8 +35,11 @@ jobs:
             "main": "node_modules/expo/AppEntry.js"
           }' > package.json
       
-      - name: 🔧 Install all dependencies with Expo
-        run: npx expo install expo react react-native @react-navigation/native @react-navigation/bottom-tabs @react-navigation/stack @react-navigation/drawer react-native-paper react-native-vector-icons react-native-safe-area-context react-native-screens expo-notifications expo-image-picker expo-camera expo-file-system expo-media-library expo-av expo-document-picker expo-device expo-constants expo-linking expo-web-browser expo-mail-composer @react-native-async-storage/async-storage react-native-gesture-handler react-native-reanimated react-native-svg uuid moment lodash @babel/core @types/react
+      - name: 🔧 Install Expo first
+        run: npm install expo
+      
+      - name: 📦 Install all dependencies with Expo
+        run: npx expo install react react-native @react-navigation/native @react-navigation/bottom-tabs @react-navigation/stack @react-navigation/drawer react-native-paper react-native-vector-icons react-native-safe-area-context react-native-screens expo-notifications expo-image-picker expo-camera expo-file-system expo-media-library expo-av expo-document-picker expo-device expo-constants expo-linking expo-web-browser expo-mail-composer @react-native-async-storage/async-storage react-native-gesture-handler react-native-reanimated react-native-svg uuid moment lodash @babel/core @types/react
       
       - name: 🏗️ Build APK
         run: |
