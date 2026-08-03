@@ -16,8 +16,7 @@ jobs:
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
-          check-latest: true
+          node-version: '24.x'   # Use Node 24 (not deprecated)
       
       - name: 🟢 Verify Node version
         run: node --version
@@ -31,18 +30,56 @@ jobs:
       - name: 🤖 Setup Android SDK
         uses: android-actions/setup-android@v3
       
-      - name: 📦 Create package.json with correct entry
+      - name: 📦 Create package.json
         run: |
           echo '{
             "name": "nexora-chqt",
             "version": "1.0.0",
-            "main": "src/App.js",
+            "main": "node_modules/expo/AppEntry.js",
             "scripts": {
               "start": "expo start",
               "android": "expo run:android",
               "build": "eas build -p android --profile production --local"
             }
           }' > package.json
+      
+      - name: 📱 Create app.json
+        run: |
+          echo '{
+            "expo": {
+              "name": "NEXORA CHQT",
+              "slug": "nexora-chqt",
+              "version": "1.0.0",
+              "orientation": "portrait",
+              "icon": "./src/assets/images/icon.png",
+              "userInterfaceStyle": "dark",
+              "splash": {
+                "image": "./src/assets/images/splash.png",
+                "resizeMode": "contain",
+                "backgroundColor": "#0A0F1F"
+              },
+              "assetBundlePatterns": ["**/*"],
+              "android": {
+                "adaptiveIcon": {
+                  "foregroundImage": "./src/assets/images/adaptive-icon.png",
+                  "backgroundColor": "#0A0F1F"
+                },
+                "package": "com.nexora.chqt",
+                "permissions": [
+                  "android.permission.INTERNET",
+                  "android.permission.CAMERA",
+                  "android.permission.RECORD_AUDIO",
+                  "android.permission.READ_EXTERNAL_STORAGE",
+                  "android.permission.WRITE_EXTERNAL_STORAGE",
+                  "android.permission.READ_MEDIA_IMAGES",
+                  "android.permission.READ_MEDIA_VIDEO",
+                  "android.permission.READ_MEDIA_AUDIO",
+                  "android.permission.POST_NOTIFICATIONS"
+                ]
+              },
+              "entryPoint": "./src/App.js"
+            }
+          }' > app.json
       
       - name: 🔧 Install Expo
         run: npm install expo
