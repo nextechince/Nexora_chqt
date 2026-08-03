@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18.x'
-          cache: 'npm'
+          # NO CACHE - we'll generate lockfile
       
       - name: ☕ Setup Java
         uses: actions/setup-java@v4
@@ -28,7 +28,7 @@ jobs:
       - name: 🤖 Setup Android SDK
         uses: android-actions/setup-android@v3
       
-      - name: 📦 Install dependencies
+      - name: 📦 Install dependencies (generates lockfile)
         run: npm install
       
       - name: 🔧 Fix Expo compatibility
