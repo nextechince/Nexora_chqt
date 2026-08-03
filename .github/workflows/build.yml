@@ -17,7 +17,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18.x'
-          # Remove cache: 'npm' to avoid lock file error
       
       - name: ☕ Setup Java
         uses: actions/setup-java@v4
@@ -28,11 +27,11 @@ jobs:
       - name: 🤖 Setup Android SDK
         uses: android-actions/setup-android@v3
       
-      - name: 📦 Install dependencies
-        run: npm install  # Changed from npm ci to npm install
-      
-      - name: 🔧 Install Expo CLI
+      - name: 📦 Install Expo CLI
         run: npm install -g expo-cli eas-cli
+      
+      - name: 🔧 Install dependencies with Expo
+        run: npx expo install
       
       - name: 🏗️ Build APK
         run: |
@@ -58,8 +57,8 @@ jobs:
             ## 🚀 NEXORA CHQT APK Build
             
             ### ✨ Features:
-            - ✅ Real-time Chat (Local Storage)
-            - ✅ Voice & Video Calls (WebRTC)
+            - ✅ Real-time Chat
+            - ✅ Voice & Video Calls
             - ✅ Groups with Admin/Moderator
             - ✅ Channels with Subscribers
             - ✅ File Sharing
