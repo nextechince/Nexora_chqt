@@ -17,7 +17,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18.x'
-          # NO CACHE - we'll generate lockfile
       
       - name: ☕ Setup Java
         uses: actions/setup-java@v4
@@ -28,11 +27,16 @@ jobs:
       - name: 🤖 Setup Android SDK
         uses: android-actions/setup-android@v3
       
-      - name: 📦 Install dependencies (generates lockfile)
-        run: npm install
+      - name: 📦 Create minimal package.json
+        run: |
+          echo '{
+            "name": "nexora-chqt",
+            "version": "1.0.0",
+            "main": "node_modules/expo/AppEntry.js"
+          }' > package.json
       
-      - name: 🔧 Fix Expo compatibility
-        run: npx expo install --fix
+      - name: 🔧 Install all dependencies with Expo
+        run: npx expo install expo react react-native @react-navigation/native @react-navigation/bottom-tabs @react-navigation/stack @react-navigation/drawer react-native-paper react-native-vector-icons react-native-safe-area-context react-native-screens expo-notifications expo-image-picker expo-camera expo-file-system expo-media-library expo-av expo-document-picker expo-device expo-constants expo-linking expo-web-browser expo-mail-composer @react-native-async-storage/async-storage react-native-gesture-handler react-native-reanimated react-native-svg uuid moment lodash @babel/core @types/react
       
       - name: 🏗️ Build APK
         run: |
