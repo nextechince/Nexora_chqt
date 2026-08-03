@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18.x'
-          cache: 'npm'
+          # Remove cache: 'npm' to avoid lock file error
       
       - name: ☕ Setup Java
         uses: actions/setup-java@v4
@@ -29,7 +29,7 @@ jobs:
         uses: android-actions/setup-android@v3
       
       - name: 📦 Install dependencies
-        run: npm ci
+        run: npm install  # Changed from npm ci to npm install
       
       - name: 🔧 Install Expo CLI
         run: npm install -g expo-cli eas-cli
@@ -62,18 +62,11 @@ jobs:
             - ✅ Voice & Video Calls (WebRTC)
             - ✅ Groups with Admin/Moderator
             - ✅ Channels with Subscribers
-            - ✅ File Sharing (Images, Documents, Voice)
+            - ✅ File Sharing
             - ✅ Premium Features
             - ✅ Dark Theme with Glassmorphism
             - ✅ 20+ Settings Pages
-            - ✅ Per-User Data Storage
-            - ✅ Real OTP Verification
             - ✅ No Backend Required!
-            
-            ### 📱 Installation:
-            1. Download the APK below
-            2. Enable "Install from Unknown Sources"
-            3. Install and Enjoy! 🎉
             
             ### 👑 Official Accounts:
             | Name | Phone | Role | Badge |
@@ -87,26 +80,11 @@ jobs:
             - **NEXORA OFFICIAL CHANNEL**
             - Usernames: @nex, @mrpython
             - Badge: ✅ Verified
-            - Category: Technology
             
             ### 🔑 How to use:
             1. Open the app
             2. Enter any phone number above
-            3. Enter OTP (any 6 digits works: 123456, 000000, etc.)
-            4. Done! You're logged in! 🎯
-            
-            ### 📊 App Stats:
-            - Version: v1.0.${{ github.run_number }}
-            - Platform: Android (APK)
-            - Built with: React Native + Expo
-            - App Size: ~50-70 MB
-            
-            ### 🧪 Test OTP:
-            Any 6-digit number works! (e.g., 123456)
-            
-            ### 📝 Notes:
-            - All data is stored locally on your device
-            - No internet connection required after download
-            - Premium features are fully unlocked
+            3. Enter OTP (any 6 digits)
+            4. Done! 🎯
             
             Made with ❤️ by NEXORA Team
