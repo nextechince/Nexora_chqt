@@ -17,6 +17,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18.x'
+          cache: 'npm'
       
       - name: ☕ Setup Java
         uses: actions/setup-java@v4
@@ -27,11 +28,11 @@ jobs:
       - name: 🤖 Setup Android SDK
         uses: android-actions/setup-android@v3
       
-      - name: 📦 Install Expo CLI
-        run: npm install -g expo-cli eas-cli
+      - name: 📦 Install dependencies
+        run: npm install
       
-      - name: 🔧 Install dependencies with Expo
-        run: npx expo install
+      - name: 🔧 Fix Expo compatibility
+        run: npx expo install --fix
       
       - name: 🏗️ Build APK
         run: |
