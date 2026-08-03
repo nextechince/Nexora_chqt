@@ -17,10 +17,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          check-latest: true   # ✅ Forces latest Node 20
+          check-latest: true
       
       - name: 🟢 Verify Node version
-        run: node --version    # ✅ Confirm we have Node 20
+        run: node --version
       
       - name: ☕ Setup Java
         uses: actions/setup-java@v4
@@ -32,17 +32,17 @@ jobs:
         uses: android-actions/setup-android@v3
       
       - name: 📦 Initialize package.json
-        run: npm init -y       # ✅ Creates proper package.json
+        run: npm init -y
       
       - name: 🔧 Install Expo
-        run: npm install expo  # ✅ Installs Expo first
+        run: npm install expo
       
       - name: 📦 Install all dependencies with Expo
         run: npx expo install react react-native @react-navigation/native @react-navigation/bottom-tabs @react-navigation/stack @react-navigation/drawer react-native-paper react-native-vector-icons react-native-safe-area-context react-native-screens expo-notifications expo-image-picker expo-camera expo-file-system expo-media-library expo-av expo-document-picker expo-device expo-constants expo-linking expo-web-browser expo-mail-composer @react-native-async-storage/async-storage react-native-gesture-handler react-native-reanimated react-native-svg uuid moment lodash @babel/core @types/react
       
       - name: 🏗️ Build APK
         run: |
-          npx expo export:embed
+          npx expo export:embed --platform android
           npx eas-cli build --platform android --profile production --local --output ./nexora-chqt.apk
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
