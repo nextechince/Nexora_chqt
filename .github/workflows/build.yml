@@ -31,8 +31,18 @@ jobs:
       - name: 🤖 Setup Android SDK
         uses: android-actions/setup-android@v3
       
-      - name: 📦 Initialize package.json
-        run: npm init -y
+      - name: 📦 Create package.json with correct entry
+        run: |
+          echo '{
+            "name": "nexora-chqt",
+            "version": "1.0.0",
+            "main": "src/App.js",
+            "scripts": {
+              "start": "expo start",
+              "android": "expo run:android",
+              "build": "eas build -p android --profile production --local"
+            }
+          }' > package.json
       
       - name: 🔧 Install Expo
         run: npm install expo
