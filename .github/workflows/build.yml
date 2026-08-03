@@ -41,70 +41,11 @@ jobs:
             }
           }' > package.json
       
-      - name: 📱 Create app.json with owner
-        run: |
-          echo '{
-            "expo": {
-              "name": "NEXORA CHQT",
-              "slug": "nexora-chqt",
-              "version": "1.0.0",
-              "orientation": "portrait",
-              "icon": "./src/assets/images/icon.png",
-              "userInterfaceStyle": "dark",
-              "splash": {
-                "image": "./src/assets/images/splash.png",
-                "resizeMode": "contain",
-                "backgroundColor": "#0A0F1F"
-              },
-              "assetBundlePatterns": ["**/*"],
-              "owner": "nextechince",
-              "android": {
-                "adaptiveIcon": {
-                  "foregroundImage": "./src/assets/images/adaptive-icon.png",
-                  "backgroundColor": "#0A0F1F"
-                },
-                "package": "com.nexora.chqt",
-                "permissions": [
-                  "android.permission.INTERNET",
-                  "android.permission.CAMERA",
-                  "android.permission.RECORD_AUDIO",
-                  "android.permission.READ_EXTERNAL_STORAGE",
-                  "android.permission.WRITE_EXTERNAL_STORAGE",
-                  "android.permission.READ_MEDIA_IMAGES",
-                  "android.permission.READ_MEDIA_VIDEO",
-                  "android.permission.READ_MEDIA_AUDIO",
-                  "android.permission.POST_NOTIFICATIONS"
-                ]
-              },
-              "entryPoint": "./src/App.js"
-            }
-          }' > app.json
-      
-      - name: ⚙️ Create eas.json
-        run: |
-          echo '{
-            "cli": {
-              "version": ">= 3.0.0"
-            },
-            "build": {
-              "production": {
-                "android": {
-                  "buildType": "apk"
-                }
-              }
-            }
-          }' > eas.json
-      
       - name: 🔧 Install Expo
         run: npm install expo
       
-      - name: 📦 Install dependencies with Expo
+      - name: 📦 Install all dependencies
         run: npx expo install react react-native @react-navigation/native @react-navigation/bottom-tabs @react-navigation/stack @react-navigation/drawer react-native-paper react-native-vector-icons react-native-safe-area-context react-native-screens expo-notifications expo-image-picker expo-camera expo-file-system expo-media-library expo-av expo-document-picker expo-device expo-constants expo-linking expo-web-browser expo-mail-composer @react-native-async-storage/async-storage react-native-gesture-handler react-native-reanimated react-native-svg uuid moment lodash @babel/core @types/react
-      
-      - name: 🏗️ Initialize EAS project
-        run: npx eas-cli init --account nextechince --non-interactive
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
       
       - name: 🏗️ Build APK
         run: |
